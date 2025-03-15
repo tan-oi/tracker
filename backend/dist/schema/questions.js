@@ -12,15 +12,23 @@ const contestSchema = new mongoose_1.default.Schema({
     },
     platform: {
         type: String,
-        required: true
+        required: true,
     },
-    startTime: {
-        type: String,
-        required: true
+    start: {
+        type: Date,
+        required: true,
+    },
+    end: {
+        type: Date,
+        required: true,
+    },
+    duration: {
+        type: Number,
+        required: true,
     },
     status: {
         type: String,
-        enum: ["UPCOMING", "PAST"]
-    }
+        enum: ["UPCOMING", "PAST"],
+    },
 });
 exports.Contest = mongoose_1.default.model("Contet", contestSchema);

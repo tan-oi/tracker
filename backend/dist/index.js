@@ -13,15 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const contests_1 = require("./controllers/contests");
 const codeChefController_1 = require("./controllers/codeChefController");
 const leetCodeController_1 = require("./controllers/leetCodeController");
 const codeForcesController_1 = require("./controllers/codeForcesController");
 const dotenv_1 = __importDefault(require("dotenv"));
 const db_1 = require("./db");
+const cors_1 = __importDefault(require("cors"));
+const questions_1 = require("./schema/questions");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use((0, cors_1.default)());
 (0, db_1.connectDB)();
 app.get("/", (req, res) => {
     res.json({
@@ -30,14 +32,15 @@ app.get("/", (req, res) => {
 });
 app.get("/contests", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = yield (0, contests_1.getAllContests)();
+        const contests = yield questions_1.Contest.find();
         res.json({
-            message: "success",
-            data
+            success: true,
+            contests
         });
     }
-    catch (err) {
-        console.log('error');
+    catch (error) {
+        console.error("Error fetching contests:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 }));
 app.get("/codechef", (req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -22,19 +22,20 @@ const fetchLeetCodeContests = () => __awaiter(void 0, void 0, void 0, function* 
           allContests {
             title
             startTime
+            duration
           
           }
         }
       `;
         const response = yield axios_1.default.post("https://leetcode.com/graphql", { query });
         const contests = ((_a = response.data.data) === null || _a === void 0 ? void 0 : _a.allContests) || [];
-        console.log(contests);
         const now = Date.now() / 1000;
         return contests.map((c) => ({
             platform: "LeetCode",
             name: c.title,
-            start: c.startTime,
-            end: null,
+            start: new Date(c.startTime * 1000).toISOString(),
+            end: new Date((c.startTime + c.duration) * 1000).toISOString(),
+            duration: c.duration,
             status: c.startTime > now ? "UPCOMING" : "PAST",
         }));
     }
