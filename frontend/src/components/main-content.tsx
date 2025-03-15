@@ -1,10 +1,11 @@
 import { ContestType, Platform, ContestInterface } from "@/lib/types";
-import { useEffect, useState,useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import FilterBar from "./filter-bar";
-import { SearchX,Loader2 } from "lucide-react";
+import { SearchX, Loader2 } from "lucide-react";
 import ContestCard from "./contest-card";
 import Pagination from "./pagination";
-Pagination
+import { getBookmarks } from "@/lib/services";
+Pagination;
 export function MainContent() {
   const ITEMS_PER_PAGE = 20;
   const [status, setStatus] = useState<ContestType>("UPCOMING");
@@ -26,7 +27,7 @@ export function MainContent() {
         const data = await res.json();
         console.log(data);
         setContests(data.contests);
-        setIsLoading(false)
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -44,7 +45,14 @@ export function MainContent() {
       );
     }
 
-   
+    if (showBookmarked) {
+      const bookmarkList = getBookmarks();
+      const bookmarkedIds = new Set(
+        bookmarkList.map((bookmark) => bookmark._id)
+      );
+
+      filtered = filtered.filter((contest) => bookmarkedIds.has(contest._id));
+    }
 
     return filtered;
   }, [status, selectedPlatform, showBookmarked, contests]);
@@ -75,42 +83,41 @@ export function MainContent() {
           setShowBookmarked={setShowBookmarked}
         />
 
-<main className="flex-grow container px-4 py-6 md:py-8 md:px-6 mx-auto">
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
-            <Loader2 className="h-12 w-12 text-primary mb-4 animate-spin" />
-            <h3 className="text-lg font-medium">Loading contests...</h3>
-            <p className="text-muted-foreground mt-1">
-              Please wait while we fetch the latest data.
-            </p>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {paginatedContests.map((contest) => (
-                <ContestCard key={contest._id} contest={contest} />
-              ))}
+        <main className="flex-grow container px-4 py-6 md:py-20 md:px-6 mx-auto">
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
+              <Loader2 className="h-12 w-12 text-primary mb-4 animate-spin" />
+              <h3 className="text-lg font-medium">Loading contests...</h3>
+              <p className="text-muted-foreground mt-1">
+                Please wait while we fetch the latest data.
+              </p>
             </div>
-            
-            {filteredContests.length === 0 && (
-              <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
-                <SearchX className="h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium">No contests found</h3>
-                <p className="text-muted-foreground mt-1">
-                  Try adjusting your filters to find what you're looking for.
-                </p>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {paginatedContests.map((contest) => (
+                  <ContestCard key={contest._id} contest={contest} />
+                ))}
               </div>
-            )}
-            
-            <Pagination 
-              currPage={currPage}
-              totalPages={totalPages}
-              onPageChange={setCurrPage}
-            />
-          </>
-        )}
-      </main>
 
+              {filteredContests.length === 0 && (
+                <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
+                  <SearchX className="h-12 w-12 text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-medium">No contests found</h3>
+                  <p className="text-muted-foreground mt-1">
+                    Try adjusting your filters to find what you're looking for.
+                  </p>
+                </div>
+              )}
+
+              <Pagination
+                currPage={currPage}
+                totalPages={totalPages}
+                onPageChange={setCurrPage}
+              />
+            </>
+          )}
+        </main>
       </div>
     </>
   );

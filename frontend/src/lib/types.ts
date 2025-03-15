@@ -20,3 +20,9 @@ export interface ContestInterface {
 }
 
 
+export interface Bookmark {
+    _id : String;
+    platform : Platform;
+    name : String;
+}
+

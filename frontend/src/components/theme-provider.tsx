@@ -60,6 +60,7 @@ export function ThemeProvider({
     <ThemeProviderContext.Provider {...props} value={value}>
       {children}
     </ThemeProviderContext.Provider>
+    
   )
 }
 
