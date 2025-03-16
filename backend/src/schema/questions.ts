@@ -27,6 +27,12 @@ const contestSchema = new mongoose.Schema({
     type: String,
     enum: ["UPCOMING", "PAST"],
   },
+  videoLink : {
+    type : String,
+    default : null
+  }
 });
+contestSchema.index({ name: 1, platform: 1, start: 1 }, { unique: true });
 
-export const Contest = mongoose.model("Contet", contestSchema);
+
+export const Contest = mongoose.model("Contest", contestSchema);

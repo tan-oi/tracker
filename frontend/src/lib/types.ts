@@ -15,6 +15,7 @@ export interface ContestInterface {
     end: Date;
     duration : Number;
     status: ContestType;
+    videoLink : String
     __v : Number
 
 }

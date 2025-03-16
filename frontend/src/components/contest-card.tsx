@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Bookmark, BookmarkCheck, Calendar, Clock } from "lucide-react";
+import { Bookmark, BookmarkCheck, Calendar, Clock, Ghost, Link2Off, LucideLink2 } from "lucide-react";
 
 import { ContestInterface, Platform } from "@/lib/types";
 import { Badge } from "./ui/badge";
@@ -125,6 +125,21 @@ const ContestCard: React.FC<ContestCardProps> = ({ contest }) => {
               </Badge>
             </div>
             <div>
+              { contest.videoLink ? 
+              <a href={contest.videoLink}>
+             
+                <Button variant="ghost"
+                size={"icon"}
+                
+                
+              >
+                <LucideLink2 size={5}/>
+              </Button> 
+              </a> :
+                <Button variant={"ghost"}>
+                  <Link2Off size={5}/>
+                  </Button>
+              }
               <Button
                 variant="ghost"
                 size="icon"

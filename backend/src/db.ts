@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 
 export async function connectDB() {
+ 
     const MONGO_URI = process.env.MONGO_URI;
 if (!MONGO_URI) {
   throw new Error("❌ MONGO_URI is missing in .env file");

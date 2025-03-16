@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllContests = void 0;
+exports.getAllNewContests = void 0;
 const codeChefController_1 = require("./codeChefController");
 const codeForcesController_1 = require("./codeForcesController");
 const leetCodeController_1 = require("./leetCodeController");
-const getAllContests = () => __awaiter(void 0, void 0, void 0, function* () {
+const getAllNewContests = () => __awaiter(void 0, void 0, void 0, function* () {
     const [codechef, leetcode, codeforces] = yield Promise.all([
         (0, codeChefController_1.fetchCodeChefContests)(),
         (0, leetCodeController_1.fetchLeetCodeContests)(),
@@ -25,4 +25,4 @@ const getAllContests = () => __awaiter(void 0, void 0, void 0, function* () {
         ...codeforces
     ];
 });
-exports.getAllContests = getAllContests;
+exports.getAllNewContests = getAllNewContests;

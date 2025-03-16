@@ -1,11 +1,11 @@
 
-import axios from "axios";
+
 import { fetchCodeChefContests } from "./codeChefController";
 import { fetchCodeforcesContests } from "./codeForcesController";
 import { fetchLeetCodeContests } from "./leetCodeController";
 
 
-export const getAllContests = async () => {
+export const getAllNewContests = async () => {
   const [
     codechef, 
     leetcode,

@@ -19,7 +19,7 @@ const fetchLeetCodeContests = () => __awaiter(void 0, void 0, void 0, function* 
     try {
         const query = `
         query {
-          allContests {
+          upcomingContests {
             title
             startTime
             duration
@@ -28,7 +28,7 @@ const fetchLeetCodeContests = () => __awaiter(void 0, void 0, void 0, function* 
         }
       `;
         const response = yield axios_1.default.post("https://leetcode.com/graphql", { query });
-        const contests = ((_a = response.data.data) === null || _a === void 0 ? void 0 : _a.allContests) || [];
+        const contests = ((_a = response.data.data) === null || _a === void 0 ? void 0 : _a.upcomingContests) || [];
         const now = Date.now() / 1000;
         return contests.map((c) => ({
             platform: "LeetCode",
