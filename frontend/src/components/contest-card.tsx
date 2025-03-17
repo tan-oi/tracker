@@ -10,8 +10,7 @@ import {
   Loader2,
   LucideLink2,
 } from "lucide-react";
-
-import { ContestInterface, Platform } from "@/lib/types";
+import { ContestCardProps, ContestInterface } from "@/lib/types";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { getBookmarks } from "@/lib/services";
@@ -27,53 +26,8 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { toast } from "sonner";
-
-
-const formatDate = (dateInput: Date | string): string => {
-  const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
-
-const getTimeLeft = (targetTime: Date | string): string => {
-  const now = Date.now();
-  const target =
-    typeof targetTime === "string"
-      ? new Date(targetTime).getTime()
-      : targetTime.getTime();
-
-  if (now >= target) {
-    return "Event has started/ended!";
-  }
-
-  const timeDifference = target - now;
-  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(
-    (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-};
-
-const getPlatformColor = (platform: Platform): string => {
-  switch (platform) {
-    case "LeetCode":
-      return "bg-[#FFA116] text-white";
-    case "Codeforces":
-      return "bg-[#1788D4] text-white";
-    case "CodeChef":
-      return "bg-[#713F12] text-white";
-    default:
-      return "bg-primary text-primary-foreground";
-  }
-};
+import { formatDate, getTimeLeft } from "@/lib/dateUtils";
+import { getPlatformColor } from "@/lib/platformColor";
 
 const toggleBookmark = (contest: ContestInterface) => {
   let bookmarks = getBookmarks();
@@ -93,11 +47,7 @@ const toggleBookmark = (contest: ContestInterface) => {
   }
 };
 
-interface ContestCardProps {
-  contest: ContestInterface;
-  isToken: boolean;
-  onRefetch :() => Promise<void>
-}
+
 
 const ContestCard: React.FC<ContestCardProps> = ({ contest, isToken,onRefetch }) => {
 
@@ -220,21 +170,17 @@ const ContestCard: React.FC<ContestCardProps> = ({ contest, isToken,onRefetch })
                         <Input
                         ref = {inputRef}
                           id="link"
-                          defaultValue="https://youtu.be/nEEROBg1kbg?si=9jg5y7r5Cz1H0Z8N"
+                          defaultValue={contest.videoLink ? contest.videoLink : "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
                           required
-                          
                         />
                       </div>
                       <Button type="submit" size="sm" className="px-3" disabled={loading} >
                         {
                           loading? <Loader2 className="animate-spin"/> : "Submit"
                         } 
-                        
-                      </Button>
-                      
+                      </Button>               
                     </div>
-                      </form>    
-                    
+                      </form>                       
                     <DialogFooter className="sm:justify-start">
                       <DialogClose asChild>
                         <Button type="button" variant="secondary">

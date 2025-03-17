@@ -27,3 +27,16 @@ export interface Bookmark {
     name : string;
 }
 
+
+
+export interface ContestCardProps {
+    contest: ContestInterface;
+    isToken: boolean;
+    onRefetch :() => Promise<void>
+  }
+
+export interface PaginationProps {
+    currPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}

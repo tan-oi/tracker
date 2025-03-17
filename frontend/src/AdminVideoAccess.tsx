@@ -4,9 +4,12 @@ import { Card, CardDescription, CardHeader, CardTitle, CardContent, CardFooter }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
+import { useNavigate } from "react-router"
+
 import { toast } from "sonner"
 
 export default function AdminVideoAccess() {
+  const navigate = useNavigate();
   const [code, setCode] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null);
@@ -18,9 +21,7 @@ export default function AdminVideoAccess() {
   const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true)
-    console.log(code)
-    console.log("submitted")
-
+  
     const response = await fetch("http://localhost:5000/access",{
         method: "POST",
         headers: {
@@ -36,6 +37,9 @@ export default function AdminVideoAccess() {
         localStorage.setItem("authToken",data.token);
         console.log("Authenticated");
         toast.success("Authenticated");
+
+        navigate("/")
+        
     }
     else {
         setError(data.error);

@@ -1,49 +1,37 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-interface PaginationProps {
-    currPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-}
+import { PaginationProps } from "@/lib/types";
 
 const Pagination: React.FC<PaginationProps> = ({
-    currPage,
+  currPage,
   totalPages,
   onPageChange,
 }) => {
   const getPageNumbers = () => {
     const pages = [];
-    
-    
+
     pages.push(1);
-    
-   
+
     const startPage = Math.max(2, currPage - 1);
     const endPage = Math.min(totalPages - 1, currPage + 1);
-    
-  
+
     if (startPage > 2) {
       pages.push("...");
     }
-    
-   
+
     for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
-    
- 
+
     if (endPage < totalPages - 1) {
       pages.push("...");
     }
-    
-  
+
     if (totalPages > 1) {
       pages.push(totalPages);
     }
-    
+
     return pages;
   };
 
@@ -61,7 +49,7 @@ const Pagination: React.FC<PaginationProps> = ({
         <ChevronLeft className="h-4 w-4" />
         <span className="sr-only">Previous page</span>
       </Button>
-      
+
       {getPageNumbers().map((page, index) => (
         <React.Fragment key={index}>
           {page === "..." ? (
@@ -79,7 +67,7 @@ const Pagination: React.FC<PaginationProps> = ({
           )}
         </React.Fragment>
       ))}
-      
+
       <Button
         variant="outline"
         size="icon"
@@ -95,7 +83,3 @@ const Pagination: React.FC<PaginationProps> = ({
 };
 
 export default Pagination;
-
-
-
-
