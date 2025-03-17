@@ -88,7 +88,7 @@ const ContestCard: React.FC<ContestCardProps> = ({ contest, isToken,onRefetch })
     }
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/addVideo",{
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/addVideo`,{
       method : "POST",
       headers : {
        "Content-Type" : "application/json",

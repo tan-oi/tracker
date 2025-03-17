@@ -22,7 +22,7 @@ export default function AdminVideoAccess() {
     e.preventDefault();
     setLoading(true)
   
-    const response = await fetch("http://localhost:5000/access",{
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/access`,{
         method: "POST",
         headers: {
             "Content-Type": "application/json", 
