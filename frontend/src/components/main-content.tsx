@@ -15,24 +15,33 @@ export function MainContent() {
 
   const [contests, setContests] = useState<ContestInterface[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  
+  const [isToken, setIsToken] = useState(false);
+  
+
+  const getContests = async () => {
+    setIsLoading(true);
+    
+
+    try {
+      const res = await fetch("http://localhost:5000/contests");
+      const data = await res.json();
+      console.log(data);
+      setContests(data.contests);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+
+  
+  useEffect(() => {
+    const userAuth = localStorage?.getItem("authToken");
+    if(userAuth) setIsToken(true);
+  },[])
 
   useEffect(() => {
-    const getContests = async () => {
-      setIsLoading(true);
-      setIsError(false);
-
-      try {
-        const res = await fetch("http://localhost:5000/contests");
-        const data = await res.json();
-        console.log(data);
-        setContests(data.contests);
-        setIsLoading(false);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
     getContests();
   }, []);
 
@@ -83,7 +92,7 @@ export function MainContent() {
           setShowBookmarked={setShowBookmarked}
         />
 
-        <main className="flex-grow container px-4 py-6 md:py-20 md:px-6 mx-auto">
+        <main className="flex-grow container px-4 py-6 py-16 md:py-20 md:px-6 mx-auto max-w-6xl">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
               <Loader2 className="h-12 w-12 text-primary mb-4 animate-spin" />
@@ -96,7 +105,8 @@ export function MainContent() {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {paginatedContests.map((contest) => (
-                  <ContestCard key={contest._id} contest={contest} />
+                  <ContestCard key={contest._id} contest={contest} isToken={isToken} 
+                  onRefetch={getContests}/>
                 ))}
               </div>
 

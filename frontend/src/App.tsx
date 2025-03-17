@@ -12,7 +12,7 @@ function App() {
   return (
     <>  
     
-      {/* <ContestsList/> */}
+  
       <div className='min-h-screen bg-background flex flex-col'>
 
         <header className='border-b'>

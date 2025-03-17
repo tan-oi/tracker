@@ -8,22 +8,22 @@ export type Filter = {
 
 
 export interface ContestInterface {
-    _id : String;
+    _id : string;
     platform : Platform;
-    name : String;
+    name : string;
     start: Date
     end: Date;
-    duration : Number;
+    duration : number;
     status: ContestType;
-    videoLink : String
-    __v : Number
+    videoLink : string
+    __v : number
 
 }
 
 
 export interface Bookmark {
-    _id : String;
+    _id : string;
     platform : Platform;
-    name : String;
+    name : string;
 }
 

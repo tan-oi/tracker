@@ -47,7 +47,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   };
 
   return (
-    <div className="w-full bg-background/60 backdrop-blur-md border-b border-border/40 sticky top-16 z-40">
+    <div className="max-w-6xl w-full bg-background/60 backdrop-blur-md border-b border-border/40 sticky top-16 z-40">
       <div className="container px-4 py-3 md:px-6 md:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mx-auto">
         <div className="flex items-center gap-2 animate-fade-in">
           <Button

@@ -1,11 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Bookmark, BookmarkCheck, Calendar, Clock, Ghost, Link2Off, LucideLink2 } from "lucide-react";
+import {
+  Bookmark,
+  BookmarkCheck,
+  Calendar,
+  Clock,
+  Ellipsis,
+  Link2Off,
+  Loader2,
+  LucideLink2,
+} from "lucide-react";
 
 import { ContestInterface, Platform } from "@/lib/types";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { getBookmarks } from "@/lib/services";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+} from "./ui/dialog";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { toast } from "sonner";
+
 
 const formatDate = (dateInput: Date | string): string => {
   const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
@@ -17,7 +39,6 @@ const formatDate = (dateInput: Date | string): string => {
     minute: "2-digit",
   });
 };
-
 
 const getTimeLeft = (targetTime: Date | string): string => {
   const now = Date.now();
@@ -66,22 +87,25 @@ const toggleBookmark = (contest: ContestInterface) => {
       (bookmark) => bookmark._id !== contest._id
     );
     localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks));
-  
   } else {
     bookmarks.push(contest);
     localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
-   
   }
 };
 
 interface ContestCardProps {
   contest: ContestInterface;
+  isToken: boolean;
+  onRefetch :() => Promise<void>
 }
 
-const ContestCard: React.FC<ContestCardProps> = ({ contest }) => {
+const ContestCard: React.FC<ContestCardProps> = ({ contest, isToken,onRefetch }) => {
+
+
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(contest.start));
   const [isBookmarked, setIsBookmarked] = useState(false);
-
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [loading, setIsLoading] = useState(false);
   useEffect(() => {
     const bookmarks: ContestInterface[] = JSON.parse(
       localStorage.getItem("bookmarks") || "[]"
@@ -101,8 +125,51 @@ const ContestCard: React.FC<ContestCardProps> = ({ contest }) => {
     toggleBookmark(contest);
     setIsBookmarked(!isBookmarked);
   };
+  const handleSubmit = async (e:React.FormEvent<HTMLFormElement> ) => {
+    e.preventDefault();
+    const link = inputRef.current?.value;
+    console.log(contest);
+
+    const token = localStorage.getItem("authToken");
+    if(!token) {
+      toast.error("you are not allowed to do this, put in your secret code");
+    
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const response = await fetch("http://localhost:5000/addVideo",{
+      method : "POST",
+      headers : {
+       "Content-Type" : "application/json",
+       "Authorization" : `Bearer ${token}`
+      },
+      body : JSON.stringify({
+        videoLink : link,
+        contestId : contest._id
+      })
+    })
+
+    const data = await response.json();
+    console.log(data);
+    if(data.success) {
+      toast.success("video added");
+      onRefetch();
+    }
+    else {
+      toast.error("something gone wrong, try again");
+    }
+    }
+    catch(err) {
+        toast.error("something gone wrong")
+    }
+   
+    
+    setIsLoading(false);
+  }
 
   return (
+
     <Card className="w-full backdrop-blur-md border border-border/50 shadow-sm hover-scale animate-scale-in">
       <CardHeader className="p-4 pb-2 flex flex-row items-start justify-between space-y-0">
         <div className="space-y-1.5 w-full">
@@ -124,22 +191,73 @@ const ContestCard: React.FC<ContestCardProps> = ({ contest }) => {
                   contest.status.slice(1)}
               </Badge>
             </div>
+
             <div>
-              { contest.videoLink ? 
-              <a href={contest.videoLink}>
-             
-                <Button variant="ghost"
-                size={"icon"}
-                
-                
-              >
-                <LucideLink2 size={5}/>
-              </Button> 
-              </a> :
-                <Button variant={"ghost"}>
-                  <Link2Off size={5}/>
+              {(isToken) ? (
+                <>
+              
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant={"ghost"} size={"sm"}>
+                      <Ellipsis size={5} />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      Add link
+                      <DialogDescription>
+                        Update the contest with the youtube link to its
+                        solutions.
+                      </DialogDescription>
+                    </DialogHeader>
+                        <form onSubmit={handleSubmit}>
+                    <div className="flex items-center space-x-2">
+                      <div className="grid flex-1 gap-2">
+                 
+                        <Label htmlFor="link" className="sr-only">
+                          Link
+                        </Label>
+                        <Input
+                        ref = {inputRef}
+                          id="link"
+                          defaultValue="https://youtu.be/nEEROBg1kbg?si=9jg5y7r5Cz1H0Z8N"
+                          required
+                          
+                        />
+                      </div>
+                      <Button type="submit" size="sm" className="px-3" disabled={loading} >
+                        {
+                          loading? <Loader2 className="animate-spin"/> : "Submit"
+                        } 
+                        
+                      </Button>
+                      
+                    </div>
+                      </form>    
+                    
+                    <DialogFooter className="sm:justify-start">
+                      <DialogClose asChild>
+                        <Button type="button" variant="secondary">
+                          Close
+                        </Button>
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+                </>
+              ) : null}
+
+              {contest.videoLink ? (
+                <a href={contest.videoLink}>
+                  <Button variant="ghost" size="icon">
+                    <LucideLink2 size={5} />
                   </Button>
-              }
+                </a>
+              ) : (
+                <Button variant={"ghost"}>
+                  <Link2Off size={5} />
+                </Button>
+              )}
               <Button
                 variant="ghost"
                 size="icon"
