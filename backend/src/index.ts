@@ -162,4 +162,4 @@ app.get("/codeforces", async (req:Request, res:Response) => {
   });
 });
 
-app.listen(PORT, () => console.log("running"));
+app.listen(PORT, () => console.log(`running on ${PORT}`));
