@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router"
 
 import { toast } from "sonner"
@@ -25,6 +25,10 @@ const Navbar = () => {
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false)
 
+  useEffect(() => {
+    if(open) setError(null);
+  },[open])
+  
   const changeCode = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
     setCode(e.target.value);
