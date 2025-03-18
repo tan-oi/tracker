@@ -22,7 +22,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://tracker-three-rho.vercel.app/"
+  "https://tracker-three-rho.vercel.app"
 ]
 app.use(
   cors({
