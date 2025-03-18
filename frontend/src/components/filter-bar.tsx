@@ -54,7 +54,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             variant={status === "UPCOMING" ? "default" : "outline"}
             size="sm"
             onClick={() => setStatus("UPCOMING")}
-            className="h-8 rounded-full transition-all duration-300"
+            className="h-8 rounded-full transition-all duration-300 cursor-pointer"
           >
             Upcoming
           </Button>
@@ -62,7 +62,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             variant={status === "PAST" ? "default" : "outline"}
             size="sm"
             onClick={() => setStatus("PAST")}
-            className="h-8 rounded-full transition-all duration-300"
+            className="h-8 rounded-full transition-all duration-300 cursor-pointer"
           >
             Past
           </Button>
@@ -80,7 +80,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               variant={selectedPlatforms.includes(value) ? "default" : "outline"}
               size="sm"
               onClick={() => togglePlatform(value)}
-              className="h-8 rounded-full transition-all duration-300 flex items-center gap-1.5"
+              className="h-8 rounded-full transition-all duration-300 flex items-center gap-1.5 cursor-pointer"
             >
               {icon}
               {label}
@@ -91,7 +91,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             variant={showBookmarked ? "default" : "outline"}
             size="sm"
             onClick={() => setShowBookmarked(!showBookmarked)}
-            className="h-8 rounded-full transition-all duration-300 ml-2"
+            className="h-8 rounded-full transition-all duration-300 ml-2 cursor-pointer"   
           >
             <Bookmark className="h-4 w-4 mr-1" />
             Bookmarked

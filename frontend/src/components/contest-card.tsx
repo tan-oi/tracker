@@ -170,7 +170,7 @@ const ContestCard: React.FC<ContestCardProps> = ({ contest, isToken,onRefetch })
                         <Input
                         ref = {inputRef}
                           id="link"
-                          defaultValue={contest.videoLink ? contest.videoLink : "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
+                          defaultValue={contest.videoLink ? contest.videoLink : ""}
                           required
                         />
                       </div>

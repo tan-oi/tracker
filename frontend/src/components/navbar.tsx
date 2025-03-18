@@ -15,11 +15,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react";
-
+import { useNavigate } from "react-router"
 
 import { toast } from "sonner"
 const Navbar = () => {
-
+  const navigate = useNavigate();
   const [loading,setLoading] = useState(false);
   const [code,setCode] = useState("");
   const [error, setError] = useState(null);
@@ -44,12 +44,16 @@ const Navbar = () => {
           })
       })
       const data = await response.json();
-      console.log(data);
+     
       if(data.success) {
           localStorage.setItem("authToken",data.token);
-          console.log("Authenticated");
-          toast.success("Authenticated");
+          
+          toast.success("Authenticated, you'll get access to add videos");
           setOpen(false)
+          
+         setTimeout(()=>{
+          navigate(0);
+         },1500)
         
           
       }
@@ -76,7 +80,7 @@ const Navbar = () => {
         
         <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-      <Button variant="default">
+      <Button variant="default" className="cursor-pointer">
           Add videos
         </Button>
       </DialogTrigger>
