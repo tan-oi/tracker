@@ -14,7 +14,8 @@ export const fetchCodeChefContests = async () => {
       start: new Date(c.contest_start_date_iso).toISOString(),
       end : new Date(c.contest_end_date_iso).toISOString(),
       duration : parseInt(c.contest_duration)*60,
-      status: "UPCOMING"
+      status: "UPCOMING",
+      videoLink:null
     }))
 
   

@@ -15,6 +15,7 @@ export const fetchCodeforcesContests = async () => {
         end : new Date((c.startTimeSeconds + c.durationSeconds)*1000).toISOString(),
         duration : c.durationSeconds,
         status: "UPCOMING",
+        videoLink:null
       }))
 
     } catch (error: any) {

@@ -1,16 +1,15 @@
-import { Request,Response } from "express";
+import { Request, Response } from "express";
 
-import { Contest } from "../schema/questions";
+import { Contest } from "../schema/contest";
 import { updateFreshData } from "../services/updateFreshData";
 // import { getFreshData } from "../cron-jobs/freshData";
 // import { fetchCodeChefContests } from "../services/fetchCodeChefContests";
 // import { fetchLeetCodeContests } from "../services/fetchLeetCodeContests";
 // import { fetchCodeforcesContests } from "../services/fetchCodeForcesContest";
 
-
 // export const getAllNewContests = async () => {
 //   const [
-//     codechef, 
+//     codechef,
 //     leetcode,
 //      codeforces
 //     ] = await Promise.all([
@@ -25,39 +24,35 @@ import { updateFreshData } from "../services/updateFreshData";
 //     ];
 // };
 
-
-export const getAllContests = async (req:Request,res:Response) => {
+export const getAllContests = async (req: Request, res: Response) => {
   try {
     const contests = await Contest.find();
     res.status(200).json({
       success: true,
-      contests
-    })
+      contests,
+    });
     return;
-  }
-  catch(error) {
-    console.error("Error fetching contests",error);
+  } catch (error) {
+    console.error("Error fetching contests", error);
     res.status(500).json({
-      error : "Interval server error"
-    })
+      error: "Interval server error",
+    });
   }
-}
+};
 
-export const getUpcomingContests = async (req:Request, res:Response) => {
+export const getUpcomingContests = async (req: Request, res: Response) => {
   try {
-   
     const contests = await updateFreshData();
-    
+
     res.json({
-      success : true,
-      contests
-    })
+      success: true,
+      contests,
+    });
     return;
-  }
-  catch(err) {
+  } catch (err) {
     res.status(500).json({
-      error : "Internal server error"
-    })
+      error: "Internal server error",
+    });
     return;
   }
-}
+};

@@ -25,6 +25,7 @@ export const fetchLeetCodeContests = async () => {
           end: new Date ((c.startTime + c.duration)*1000).toISOString(),
         duration : c.duration,
         status: c.startTime > now ? "UPCOMING" : "PAST",
+        videoLink: null
       }));
       
     } catch (error: any) {

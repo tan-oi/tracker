@@ -1,11 +1,10 @@
-
 //first ran to populate all existing videos
 //will be effective to fetch new videos
 
 import axios from "axios";
 import dotenv from "dotenv";
 
-import { Contest } from "../schema/questions";
+import { Contest } from "../schema/contest";
 import { connectDB } from "../db";
 
 dotenv.config();

@@ -1,11 +1,10 @@
-
-import { Contest } from "../schema/questions";
+import { Contest } from "../schema/contest";
 
 export async function updateContestStatus(): Promise<void> {
   try {
     const now = Date.now();
     const upcomingContests = await Contest.find({ status: "UPCOMING" });
-    
+
     const updates = upcomingContests.map((contest) => {
       const start = new Date(contest.start).getTime();
       const end = new Date(contest.end).getTime();
