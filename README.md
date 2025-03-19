@@ -1,5 +1,12 @@
 #  **CP Contest Tracker Platform**
 
+## 🎥 Demo
+[![Watch Demo](https://img.youtube.com/vi/2qR74lzymgU/0.jpg)](https://www.youtube.com/watch?v=2qR74lzymgU)
+
+
+
+
+
 ### 📚 **Overview**
 This platform helps users keep track of all coding contests happening across major platforms like:  
 - 🟡 **LeetCode**  
