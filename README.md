@@ -1,6 +1,6 @@
 #  **CP Contest Tracker Platform**
 
-## 🎥 Demo
+## 🎥 Demo (youtube link)
 [![Watch Demo](https://img.youtube.com/vi/2qR74lzymgU/0.jpg)](https://www.youtube.com/watch?v=2qR74lzymgU)
 
 
