@@ -26,11 +26,11 @@ export function MainContent() {
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/contests`);
       const data = await res.json();
-      
+       
       setContests(data.contests);
       setIsLoading(false);
     } catch (err) {
-      console.log(err);
+    
     }
   };
 

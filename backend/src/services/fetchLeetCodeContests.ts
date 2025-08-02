@@ -13,9 +13,12 @@ export const fetchLeetCodeContests = async () => {
           }
         }
       `;
+
+     
       const response = await axios.post("https://leetcode.com/graphql", { query });
       const contests = response.data.data?.upcomingContests || [];
-     
+      
+    
      
       const now = Date.now() / 1000; 
       return contests.map((c: any) => ({

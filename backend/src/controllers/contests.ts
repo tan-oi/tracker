@@ -6,7 +6,9 @@ import { updateFreshData } from "../services/updateFreshData";
 
 export const getAllContests = async (req: Request, res: Response) => {
   try {
-    const contests = await Contest.find();
+    const contests = await Contest.find().sort({
+      start : -1
+    });
     res.status(200).json({
       success: true,
       contests,

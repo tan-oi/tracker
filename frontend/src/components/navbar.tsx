@@ -82,7 +82,7 @@ const Navbar = () => {
         <ModeToggle/>
 
         
-        <Dialog open={open} onOpenChange={setOpen}>
+        {/* <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
       <Button variant="default" className="cursor-pointer">
           Add videos
@@ -125,7 +125,7 @@ const Navbar = () => {
           </div>
        </form>
       </DialogContent>
-    </Dialog>
+    </Dialog> */}
         </div>
       </div>
     </header>
