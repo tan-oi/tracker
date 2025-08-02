@@ -50,13 +50,14 @@ cron.schedule("0 */6 * * *", async () => {
     await updateFreshData();
   });
 
-  cron.schedule("0 */2 * * *", async () => {
-    await updateYoutubeLinks();
-  });
+  // cron.schedule("0 */2 * * *", async () => {
+  //   await updateYoutubeLinks();
+  // });
   
 
 
 app.get("/", (req:Request, res:Response) => {
+  console.log("pinged")
   res.json({
     message: "welcome",
   });
