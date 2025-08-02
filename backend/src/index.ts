@@ -1,8 +1,8 @@
-import express, { Request,Response } from "express";
+import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./db";
 import cors from "cors";
-import cron from "node-cron"
+import cron from "node-cron";
 import { authenticateToken } from "./middlewares/checkUser";
 import contestRouter from "./routes/contests";
 import { fetchCodeChefContests } from "./services/fetchCodeChefContests";
@@ -23,8 +23,8 @@ app.use(express.json());
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:4173",
-  "https://tracker-three-rho.vercel.app"
-]
+  "https://tracker-three-rho.vercel.app",
+];
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -34,11 +34,10 @@ app.use(
         callback(new Error("Not allowed by CORS"));
       }
     },
-    methods: ["GET", "POST", "PUT", "DELETE"], 
-    allowedHeaders: ["Content-Type", "Authorization"], 
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
 
 connectDB();
 
@@ -47,47 +46,45 @@ cron.schedule("0 */2 * * *", async () => {
 });
 
 cron.schedule("0 */6 * * *", async () => {
-    await updateFreshData();
-  });
+  await updateFreshData();
+});
 
-  // cron.schedule("0 */2 * * *", async () => {
-  //   await updateYoutubeLinks();
-  // });
-  
+// cron.schedule("0 */2 * * *", async () => {
+//   await updateYoutubeLinks();
+// });
 
-
-app.get("/", (req:Request, res:Response) => {
-  console.log("pinged")
+app.get("/", (req: Request, res: Response) => {
+  console.log(
+    "Ping at",
+    new Date().toISOString(),
+    "| UA:",
+    req.headers["user-agent"],
+    "| IP:",
+    req.ip
+  );
   res.json({
     message: "welcome",
   });
 });
 
-app.use("/contests",contestRouter)
+app.use("/contests", contestRouter);
 
+app.post("/access", allowAccess);
 
-app.post("/access", allowAccess)
-
-
-app.post("/addVideo", authenticateToken , addVideo)
-
-
+app.post("/addVideo", authenticateToken, addVideo);
 
 //api to get all the upcoming codechef contests.
-app.get("/codechef", async (req:Request, res:Response) => {
+app.get("/codechef", async (req: Request, res: Response) => {
   const data = await fetchCodeChefContests();
   console.log(data);
-  res.status(200)
-  .json({
+  res.status(200).json({
     data,
   });
   return;
 });
 
-
 //api to get all the upcoming leetcode contests
-app.get("/leetcode", async (req:Request, res:Response) => {
-  
+app.get("/leetcode", async (req: Request, res: Response) => {
   const data = await fetchLeetCodeContests();
 
   res.json({
@@ -95,9 +92,8 @@ app.get("/leetcode", async (req:Request, res:Response) => {
   });
 });
 
-
 //api to get all the upcoming codeforces contests
-app.get("/codeforces", async (req:Request, res:Response) => {
+app.get("/codeforces", async (req: Request, res: Response) => {
   const data = await fetchCodeforcesContests();
   res.json({
     data,
