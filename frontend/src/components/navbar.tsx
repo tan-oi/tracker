@@ -1,73 +1,60 @@
 
 import { ModeToggle } from "./mode-toggle";
-import { Button } from "./ui/button";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogOverlay,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router"
+// import { useEffect, useState } from "react";
 
-import { toast } from "sonner"
+
+// import { toast } from "sonner"
 const Navbar = () => {
-  const navigate = useNavigate();
-  const [loading,setLoading] = useState(false);
-  const [code,setCode] = useState("");
-  const [error, setError] = useState(null);
-  const [open, setOpen] = useState(false)
+  // const navigate = useNavigate();
+  // const [loading,setLoading] = useState(false);
+  // const [code,setCode] = useState("");
+  // const [error, setError] = useState(null);
+  // const [open, setOpen] = useState(false)
 
-  useEffect(() => {
-    if(open) setError(null);
-  },[open])
+  // useEffect(() => {
+  //   if(open) setError(null);
+  // },[open])
   
-  const changeCode = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError(null);
-    setCode(e.target.value);
-  }
+  // const changeCode = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setError(null);
+  //   setCode(e.target.value);
+  // }
 
-    const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      setLoading(true)
+  //   const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
+  //     e.preventDefault();
+  //     setLoading(true)
     
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/access`,{
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json", 
-            },
-          body: JSON.stringify({
-              secretCode : code
-          })
-      })
-      const data = await response.json();
+  //     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/access`,{
+  //         method: "POST",
+  //         headers: {
+  //             "Content-Type": "application/json", 
+  //           },
+  //         body: JSON.stringify({
+  //             secretCode : code
+  //         })
+  //     })
+  //     const data = await response.json();
      
-      if(data.success) {
-          localStorage.setItem("authToken",data.token);
+  //     if(data.success) {
+  //         localStorage.setItem("authToken",data.token);
           
-          toast.success("Authenticated, you'll get access to add videos");
-          setOpen(false)
+  //         toast.success("Authenticated, you'll get access to add videos");
+  //         setOpen(false)
           
-         setTimeout(()=>{
-          navigate(0);
-         },1500)
+  //        setTimeout(()=>{
+  //         navigate(0);
+  //        },1500)
         
           
-      }
-      else {
-          setError(data.error);
-          toast.error(data.error)
-      }
-      setLoading(false)
-      setCode("")
-    }
+  //     }
+  //     else {
+  //         setError(data.error);
+  //         toast.error(data.error)
+  //     }
+  //     setLoading(false)
+  //     setCode("")
+  //   }
   
   return (
     <header className="w-full border-b border-border/40 fixed top-0 z-50 backdrop-blur-md bg-background/80">

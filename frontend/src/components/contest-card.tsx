@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Bookmark, BookmarkCheck, Calendar, Clock } from "lucide-react";
 import { ContestCardProps, ContestInterface } from "@/lib/types";
@@ -6,7 +6,7 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { getBookmarks } from "@/lib/services";
 
-import { toast } from "sonner";
+
 import { formatDate, getTimeLeft } from "@/lib/dateUtils";
 import { getPlatformColor } from "@/lib/platformColor";
 
@@ -29,13 +29,11 @@ const toggleBookmark = (contest: ContestInterface) => {
 };
 
 const ContestCard: React.FC<ContestCardProps> = ({
-  contest,
-  onRefetch,
+  contest
 }) => {
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(contest.start));
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [loading, setIsLoading] = useState(false);
+  
   useEffect(() => {
     const bookmarks: ContestInterface[] = JSON.parse(
       localStorage.getItem("bookmarks") || "[]"
@@ -55,48 +53,7 @@ const ContestCard: React.FC<ContestCardProps> = ({
     toggleBookmark(contest);
     setIsBookmarked(!isBookmarked);
   };
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const link = inputRef.current?.value;
-    console.log(contest);
-
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      toast.error("you are not allowed to do this, put in your secret code");
-
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/addVideo`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            videoLink: link,
-            contestId: contest._id,
-          }),
-        }
-      );
-
-      const data = await response.json();
-      console.log(data);
-      if (data.success) {
-        toast.success("video added");
-        onRefetch();
-      } else {
-        toast.error("something gone wrong, try again");
-      }
-    } catch (err) {
-      toast.error("something gone wrong");
-    }
-
-    setIsLoading(false);
-  };
+ 
 
   return (
     <Card className="w-full backdrop-blur-md border border-border/50 shadow-sm hover-scale animate-scale-in">
